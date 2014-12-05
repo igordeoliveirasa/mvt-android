@@ -62,6 +62,7 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Session session = Session.getActiveSession();
+
         if (session != null &&
                 (session.isOpened() || session.isClosed()) ) {
             onSessionStateChange(session, session.getState(), null);
