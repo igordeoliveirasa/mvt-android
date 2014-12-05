@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deps/facebook/facebook.iml" filepath="$PROJECT_DIR$/deps/facebook/facebook.iml" />
       <module fileurl="file://$PROJECT_DIR$/social-login-android.iml" filepath="$PROJECT_DIR$/social-login-android.iml" />
     </modules>
   </component>
