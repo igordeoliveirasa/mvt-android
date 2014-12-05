@@ -186,10 +186,8 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
             if (mGoogleApiClient.isConnected()) {
                 mSignInClicked = false;
                 Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-
                 Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
-
-                //mGoogleApiClient.disconnect();
+                mGoogleApiClient.disconnect();
                 //mGoogleApiClient.connect();
             }
         }
