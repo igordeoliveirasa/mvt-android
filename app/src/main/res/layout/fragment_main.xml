@@ -1,16 +1,37 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.igordeoliveira.sociallogin.MainFragment">
+    tools:context="com.igordeoliveira.sociallogin.LoginButtonsFragment">
 
-
-    <com.facebook.widget.LoginButton
-        android:id="@+id/authButton"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        />
+        android:layout_alignParentBottom="true" >
 
+        <com.facebook.widget.LoginButton
+            android:id="@+id/authButton"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/authButton"/>
+
+        <Button
+            android:id="@+id/sign_out_button"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Sign Out"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/sign_in_button"
+            />
+    </RelativeLayout>
 
 </FrameLayout>
