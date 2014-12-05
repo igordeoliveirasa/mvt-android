@@ -27,23 +27,9 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
     /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 0;
-
-    /* Client used to interact with Google APIs. */
     private GoogleApiClient mGoogleApiClient;
-
-    /* A flag indicating that a PendingIntent is in progress and prevents
-     * us from starting further intents.
-     */
     private boolean mIntentInProgress;
-
-    /* Track whether the sign-in button has been clicked so that we know to resolve
-     * all issues preventing sign-in without waiting.
-     */
     private boolean mSignInClicked;
-
-    /* Store the connection result from onConnectionFailed callbacks so that we can
-     * resolve them when the user clicks sign-in.
-     */
     private ConnectionResult mConnectionResult;
 
     private MainFragment mainFragment;
@@ -52,7 +38,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -60,10 +45,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                 .addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
-
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
-
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -80,10 +61,11 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
         }
 
-
         if (savedInstanceState == null) {
             // Add the fragment on initial activity setup
             mainFragment = new MainFragment();
+            mainFragment.setGoogleButtonsClickListener(this);
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, mainFragment)
@@ -123,7 +105,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        //mGoogleApiClient.connect();
     }
 
     protected void onStop() {
@@ -157,6 +139,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     }
 
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
+        super.onActivityResult(requestCode, responseCode, intent);
         if (requestCode == RC_SIGN_IN) {
             if (responseCode != RESULT_OK) {
                 mSignInClicked = false;
@@ -194,18 +177,22 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
         if (view.getId() == R.id.sign_in_button
                 && !mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
-            resolveSignInError();
+            //resolveSignInError();
+            mIntentInProgress = false;
+            mGoogleApiClient.connect();
         }
 
         if (view.getId() == R.id.sign_out_button) {
             if (mGoogleApiClient.isConnected()) {
                 mSignInClicked = false;
                 Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-                mGoogleApiClient.disconnect();
-                mGoogleApiClient.connect();
+
+                Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient);
+
+                //mGoogleApiClient.disconnect();
+                //mGoogleApiClient.connect();
             }
         }
     }
-
 
 }

@@ -9,23 +9,38 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
+import com.google.android.gms.common.SignInButton;
 
 import java.util.Arrays;
 
 public class MainFragment extends Fragment {
 
     private static final String TAG = "MainFragment";
+
+    public View.OnClickListener getGoogleButtonsClickListener() {
+        return googleButtonsClickListener;
+    }
+
+    public void setGoogleButtonsClickListener(View.OnClickListener googleButtonsClickListener) {
+        this.googleButtonsClickListener = googleButtonsClickListener;
+    }
+
+    private View.OnClickListener googleButtonsClickListener;
+
+
     private Session.StatusCallback callback = new Session.StatusCallback() {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
             onSessionStateChange(session, state, exception);
         }
     };
+
     private UiLifecycleHelper uiHelper;
 
     public MainFragment() {/*Required empty public constructor */}
@@ -45,6 +60,12 @@ public class MainFragment extends Fragment {
         LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
         authButton.setFragment(this);
         //authButton.setReadPermissions(Arrays.asList("user_likes", "user_status")); // asking permissions
+
+        SignInButton btnSignInGoogle = (SignInButton)view.findViewById(R.id.sign_in_button);
+        btnSignInGoogle.setOnClickListener(googleButtonsClickListener);
+
+        Button btnSignOutGoogle = (Button)view.findViewById(R.id.sign_out_button);
+        btnSignOutGoogle.setOnClickListener(googleButtonsClickListener);
 
         return view;
     }
