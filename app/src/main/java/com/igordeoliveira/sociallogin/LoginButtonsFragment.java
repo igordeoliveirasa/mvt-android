@@ -19,7 +19,7 @@ import com.google.android.gms.common.SignInButton;
 
 import java.util.Arrays;
 
-public class MainFragment extends Fragment {
+public class LoginButtonsFragment extends Fragment {
 
     private static final String TAG = "MainFragment";
 
@@ -43,7 +43,7 @@ public class MainFragment extends Fragment {
 
     private UiLifecycleHelper uiHelper;
 
-    public MainFragment() {/*Required empty public constructor */}
+    public LoginButtonsFragment() {/*Required empty public constructor */}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

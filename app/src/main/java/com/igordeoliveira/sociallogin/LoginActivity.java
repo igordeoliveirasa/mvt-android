@@ -1,6 +1,5 @@
 package com.igordeoliveira.sociallogin;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
@@ -23,7 +22,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
 
-public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class LoginActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
     /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 0;
@@ -32,7 +31,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
     private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
 
-    private MainFragment mainFragment;
+    private LoginButtonsFragment loginButtonsFragment;
 
 
     @Override
@@ -63,16 +62,16 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
         if (savedInstanceState == null) {
             // Add the fragment on initial activity setup
-            mainFragment = new MainFragment();
-            mainFragment.setGoogleButtonsClickListener(this);
+            loginButtonsFragment = new LoginButtonsFragment();
+            loginButtonsFragment.setGoogleButtonsClickListener(this);
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(android.R.id.content, mainFragment)
+                    .add(android.R.id.content, loginButtonsFragment)
                     .commit();
         } else {
             // Or set the fragment from restored state info
-            mainFragment = (MainFragment) getSupportFragmentManager()
+            loginButtonsFragment = (LoginButtonsFragment) getSupportFragmentManager()
                     .findFragmentById(android.R.id.content);
         }
     }
