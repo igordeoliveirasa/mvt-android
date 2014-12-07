@@ -1,10 +1,16 @@
 language: java
-script: ./gradlew build jacocoTestReport
 jdk: oraclejdk7
+
+# whitelist
+branches:
+  only:
+    - /^.*$/
 
 env:
   matrix:
     - TERM=dumb
 
+script: ./gradlew build jacocoTestReport
+
 after_success:
-- ./gradlew jacocoRootReport coveralls
+    - ./gradlew jacocoRootReport coveralls
