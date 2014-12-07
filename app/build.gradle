@@ -153,17 +153,22 @@ robolectric {
 }
 
 dependencies {
+
+
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+
     compile project(':facebook')
     compile 'com.google.android.gms:play-services:6.1.+'
     repositories {
         mavenCentral()
     }
     // Espresso
-    androidTestCompile files('lib/espresso-1.1.jar')
-    androidTestCompile files('lib/testrunner-1.1.jar')
-    androidTestCompile files('lib/testrunner-runtime-1.1.jar')
-    androidTestCompile files('lib/httpmime-4.2.jar')
+    androidTestCompile files('libs/espresso-1.1.jar')
+    androidTestCompile files('libs/testrunner-1.1.jar')
+    androidTestCompile files('libs/testrunner-runtime-1.1.jar')
+
 
     androidTestCompile 'com.google.guava:guava:14.0.1'
     androidTestCompile 'com.squareup.dagger:dagger:1.1.0'
