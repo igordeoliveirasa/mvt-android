@@ -1,9 +1,6 @@
-# travis-ci configurations
-#language: java
-#jdk: oraclejdk7
-
-
 language: android
+
+android:
     components:
         - build-tools-20.0.0
         - android-19
