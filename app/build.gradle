@@ -1,4 +1,118 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.14.+'
+        classpath 'org.robolectric:robolectric-gradle-plugin:0.14.+'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
+    }
+}
+
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'robolectric'
+//apply from: 'https://gist.githubusercontent.com/kozko2001/edd6cde0ce1da1de70a3/raw/robolectricAndroidStudio.gradle'
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
+
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+}
+
+def coverageSourceDirs = [
+        '../app/src/main/java'
+]
+
+task jacocoTestReport(type:JacocoReport, dependsOn: "testDebug") {
+    group = "Reporting"
+
+    description = "Generate Jacoco coverage reports"
+
+    classDirectories = fileTree(
+            dir: '../app/build/intermediates/classes/debug',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/*$ViewInjector*.*',
+                       '**/BuildConfig.*',
+                       '**/Manifest*.*']
+    )
+
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files('../app/build/jacoco/testDebug.exec')
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+}
+
+
+project.afterEvaluate {
+    // Modifies the iml to move the orderEntry to the last
+    task robolectrictAndroidStudioModifyIml {
+        def imlTree = fileTree(dir: ".", include: "*.iml")
+        inputs.files imlTree
+        outputs.files imlTree
+
+        imlTree.each { File imlFile ->
+            def xml = new XmlParser().parse(imlFile)
+            def jdk = xml.depthFirst().grep { it."@type" == "jdk" }.first()
+
+            // move the orderEntry of type jdk to the bottom of the file
+            def jdk_parent = jdk.parent()
+            jdk_parent.remove(jdk)
+            jdk_parent.append(jdk)
+
+            def outputTest = xml.component."output-test"[0] ?: new Node(jdk_parent, "output-test");
+            outputTest.@url = "file://\$MODULE_DIR\$/build/test-classes"
+
+            def writer = new StringWriter()
+            new XmlNodePrinter(new PrintWriter(writer)).print(xml)
+            imlFile.text = writer.toString()
+        }
+    }
+
+    // compileTest task from robolectric
+    def compileTestTask = project.tasks.findAll {
+        it.name ==~ /compileTest.*/
+    }
+
+    if(compileTestTask) {
+        project.tasks.findAll { // for all assemble tasks
+            it.name ==~ /assemble.*/
+        }.each {
+            it.dependsOn compileTestTask // compile the tests
+            it.dependsOn robolectrictAndroidStudioModifyIml // modify the iml
+        }
+    }
+}
+
+coveralls {
+    sourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs).files.absolutePath
+}
+
+task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
+    dependsOn = subprojects.test
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories =  files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+        xml.destination = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+    }
+}
 
 android {
     compileSdkVersion 21
@@ -9,19 +123,72 @@ android {
         targetSdkVersion 13
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            runProguard false
+            proguardFile 'proguard-rules.txt'
+            debuggable true
+            testCoverageEnabled = true
+        }
     }
     productFlavors {
     }
+}
+
+robolectric {
+    include '**/*Test.class'
+    exclude '**/espresso/**/*.class'
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':facebook')
     compile 'com.google.android.gms:play-services:6.1.+'
+    repositories {
+        mavenCentral()
+    }
+    // Espresso
+    androidTestCompile files('lib/espresso-1.1.jar')
+    androidTestCompile files('lib/testrunner-1.1.jar')
+    androidTestCompile files('lib/testrunner-runtime-1.1.jar')
+    androidTestCompile 'com.google.guava:guava:14.0.1'
+    androidTestCompile 'com.squareup.dagger:dagger:1.1.0'
+    androidTestCompile 'org.hamcrest:hamcrest-integration:1.1'
+    androidTestCompile 'org.hamcrest:hamcrest-core:1.1'
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.1'
+    androidTestCompile('junit:junit:4.11') {
+        exclude module: 'hamcrest-core'
+    }
+    androidTestCompile('org.robolectric:robolectric:2.4') {
+        exclude module: 'classworlds'
+        exclude module: 'commons-logging'
+        exclude module: 'httpclient'
+        exclude module: 'maven-artifact'
+        exclude module: 'maven-artifact-manager'
+        exclude module: 'maven-error-diagnostics'
+        exclude module: 'maven-model'
+        exclude module: 'maven-project'
+        exclude module: 'maven-settings'
+        exclude module: 'plexus-container-default'
+        exclude module: 'plexus-interpolation'
+        exclude module: 'plexus-utils'
+        exclude module: 'wagon-file'
+        exclude module: 'wagon-http-lightweight'
+        exclude module: 'wagon-provider-api'
+    }
+    androidTestCompile 'com.squareup:fest-android:1.0.+'
+}
+
+apply plugin: 'idea'
+
+idea {
+    module {
+        testOutputDir = file('build/test-classes/debug')
+    }
 }
