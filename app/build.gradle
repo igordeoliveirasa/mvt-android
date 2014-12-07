@@ -32,22 +32,22 @@ def coverageSourceDirs = [
 ]
 
 task jacocoTestReport(type:JacocoReport, dependsOn: "testDebug") {
-//    group = "Reporting"
+    group = "Reporting"
 
-//    description = "Generate Jacoco coverage reports"
+    description = "Generate Jacoco coverage reports"
 
-//    classDirectories = fileTree(
-//            dir: '../app/build/intermediates/classes/debug',
-//            excludes: ['**/R.class',
-//                       '**/R$*.class',
-//                       '**/*$ViewInjector*.*',
-//                       '**/BuildConfig.*',
-//                       '**/Manifest*.*']
-//    )
+    classDirectories = fileTree(
+            dir: '../app/build/intermediates/classes/debug',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/*$ViewInjector*.*',
+                       '**/BuildConfig.*',
+                       '**/Manifest*.*']
+    )
 
-//    additionalSourceDirs = files(coverageSourceDirs)
-//    sourceDirectories = files(coverageSourceDirs)
-//    executionData = files('../app/build/jacoco/testDebug.exec')
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files('../app/build/jacoco/testDebug.exec')
 
     reports {
         xml.enabled = true
