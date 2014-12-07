@@ -14,7 +14,7 @@ env:
   matrix:
     - TERM=dumb
 
-script: ./gradlew build jacocoTestReport
+script: ./gradlew build jacocoTestReport --stacktrace
 
 after_success:
-    - ./gradlew jacocoRootReport coveralls
+    - ./gradlew jacocoRootReport coveralls --stacktrace
