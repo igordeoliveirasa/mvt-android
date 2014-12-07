@@ -101,7 +101,7 @@ project.afterEvaluate {
 
 coveralls {
     sourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs).files.absolutePath
-    jacocoReportPath = "$buildDir/reports/jacoco/testTestReport/jacocoTestReport.xml"
+    jacocoReportPath = "$buildDir/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
 }
 
 task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
