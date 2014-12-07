@@ -17,7 +17,47 @@ allprojects {
 
 apply plugin: 'com.android.application'
 apply plugin: 'robolectric'
-apply from: 'https://gist.githubusercontent.com/kozko2001/edd6cde0ce1da1de70a3/raw/robolectricAndroidStudio.gradle'
+//apply from: 'https://gist.githubusercontent.com/kozko2001/edd6cde0ce1da1de70a3/raw/robolectricAndroidStudio.gradle'
+
+project.afterEvaluate {
+    // Modifies the iml to move the orderEntry to the last
+    task robolectrictAndroidStudioModifyIml {
+        def imlTree = fileTree(dir: ".", include: "*.iml")
+        inputs.files imlTree
+        outputs.files imlTree
+
+        imlTree.each { File imlFile ->
+            def xml = new XmlParser().parse(imlFile)
+            def jdk = xml.depthFirst().grep { it."@type" == "jdk" }.first()
+
+            // move the orderEntry of type jdk to the bottom of the file
+            def jdk_parent = jdk.parent()
+            jdk_parent.remove(jdk)
+            jdk_parent.append(jdk)
+
+            def outputTest = xml.component."output-test"[0] ?: new Node(jdk_parent, "output-test");
+            outputTest.@url = "file://\$MODULE_DIR\$/build/test-classes"
+
+            def writer = new StringWriter()
+            new XmlNodePrinter(new PrintWriter(writer)).print(xml)
+            imlFile.text = writer.toString()
+        }
+    }
+
+    // compileTest task from robolectric
+    def compileTestTask = project.tasks.findAll {
+        it.name ==~ /compileTest.*/
+    }
+
+    if(compileTestTask) {
+        project.tasks.findAll { // for all assemble tasks
+            it.name ==~ /assemble.*/
+        }.each {
+            it.dependsOn compileTestTask // compile the tests
+            it.dependsOn robolectrictAndroidStudioModifyIml // modify the iml
+        }
+    }
+}
 
 android {
     compileSdkVersion 21
