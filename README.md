@@ -1,4 +1,4 @@
-social-login-android
+Minimal Viable Template for Android
 ====================
 [![Build Status](https://travis-ci.org/igordeoliveirasa/mvt-android.svg?branch=master)](https://travis-ci.org/igordeoliveirasa/mvt-android)
 [![Coverage Status](https://img.shields.io/coveralls/igordeoliveirasa/mvt-android.svg)](https://coveralls.io/r/igordeoliveirasa/mvt-android?branch=master)
