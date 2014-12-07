@@ -175,6 +175,8 @@ dependencies {
     androidTestCompile 'org.hamcrest:hamcrest-core:1.1'
     androidTestCompile 'org.hamcrest:hamcrest-library:1.1'
     //androidTestCompile 'org.apache.httpcomponents:httpmime:4.3.6'
+    //compile 'org.apache.httpcomponents:httpclient:4.3.6'
+
 
 
     androidTestCompile('junit:junit:4.11') {
