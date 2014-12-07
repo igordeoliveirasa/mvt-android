@@ -1,6 +1,12 @@
 # travis-ci configurations
-language: java
-jdk: oraclejdk7
+#language: java
+#jdk: oraclejdk7
+
+
+language: android
+    components:
+        - build-tools-20.0.0
+        - android-19
 
 # whitelist
 branches:
