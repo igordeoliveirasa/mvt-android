@@ -29,7 +29,7 @@ public class ServerSocialLoginAuthenticator extends AsyncTask<HashMap<String,Str
     protected String doInBackground(HashMap<String,String>... params) {
         String ret = null;
         try {
-            HttpClient httpclient = new DefaultHttpClient();
+            HttpClient httpclient = new DefaultHttpClient(); // -> novo metodo, mudar no teste. HttpClientBuilder.create().build();
             HashMap<String, String> map = ((HashMap<String, String>) params[0]);
             String url = map.get(PARAM_URL);//[PARAM_URL];// "http://onlinesociallogin.herokuapp.com/token_authentication/authenticate.json";
             //url = "http://172.20.10.3:3000";
