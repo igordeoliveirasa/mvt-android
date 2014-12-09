@@ -104,10 +104,11 @@ public class LoginButtonsFragmentTest {
 
         assertEquals(mockView, view);
     }
-
+/*
     @Test
     public void testOnResume() throws IOException, JSONException {
         LoginButtonsFragment fragment = new LoginButtonsFragment();
         startFragment(fragment);
     }
+    */
 }
