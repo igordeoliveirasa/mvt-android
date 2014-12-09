@@ -1,24 +1,20 @@
 package com.igordeoliveira.sociallogin;
 
-import android.content.Entity;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.tester.org.apache.http.HttpResponseStub;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,10 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -38,33 +35,21 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(emulateSdk = 18, manifest = Config.NONE)
-public class HttpConnectionTest {
+public class ServerSocialLoginAuthenticatorTest {
 
     @Test
     public void testPostSuccessfully() throws IOException, JSONException {
-
         // Setting the mocks up
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        HttpEntity httpEntity = Mockito.mock(HttpEntity.class);
-        InputStream inputStream = new ByteArrayInputStream( "{\"status\":\"ok\", \"message\":\"Success!\"}".getBytes() );
-        when(httpClient.execute(any(HttpPost.class))).thenReturn(httpResponse);
-        when(httpResponse.getEntity()).thenReturn(httpEntity);
-        when(httpEntity.getContent()).thenReturn(inputStream);
+        HttpConnection connection = Mockito.mock(HttpConnection.class);
+        when(connection.post(anyString(), Matchers.<List<NameValuePair>>anyObject())).thenReturn("{\"status\":\"ok\", \"message\":\"Success!\"}");
+
+        String url = "http://onlinesociallogin.herokuapp.com/token_authentication/authenticate.json";
+        String email = "validemail";
+        String token = "validtoken";
 
         // Testing
-        HttpConnection con = new HttpConnection(httpClient);
-        String url = "http://onlinesociallogin.herokuapp.com/token_authentication/authenticate.json";
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("TOKEN", "validtoken"));
-        params.add(new BasicNameValuePair("EMAIL", "validemail"));
-        String response = null;
-
-        try {
-            response = con.post(url, params);
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
+        ServerSocialLoginAuthenticator ssla = new ServerSocialLoginAuthenticator(connection, url, email, token);
+        String response = ssla.doInBackground();
 
         JSONTokener tokener = new JSONTokener(response);
         JSONObject obj = new JSONObject(tokener);

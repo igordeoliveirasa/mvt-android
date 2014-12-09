@@ -9,18 +9,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class LoginButtonsFragment extends Fragment {
 
     private static final String TAG = "MainFragment";
+
+
+    private View.OnClickListener googleButtonsClickListener;
 
     public View.OnClickListener getGoogleButtonsClickListener() {
         return googleButtonsClickListener;
@@ -29,8 +39,6 @@ public class LoginButtonsFragment extends Fragment {
     public void setGoogleButtonsClickListener(View.OnClickListener googleButtonsClickListener) {
         this.googleButtonsClickListener = googleButtonsClickListener;
     }
-
-    private View.OnClickListener googleButtonsClickListener;
 
 
     private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -41,6 +49,9 @@ public class LoginButtonsFragment extends Fragment {
     };
 
     private UiLifecycleHelper uiHelper;
+    public UiLifecycleHelper getUiHelper() {return uiHelper;}
+    public void setUiHelper(UiLifecycleHelper uiHelper) {this.uiHelper = uiHelper;}
+
 
     public LoginButtonsFragment() {/*Required empty public constructor */}
 
@@ -72,40 +83,37 @@ public class LoginButtonsFragment extends Fragment {
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
 
-            String token = session.getAccessToken();
+            final String token = session.getAccessToken();
 
             // Requesting Facebook Me
-            FacebookGraph facebookGraph = new FacebookGraph();
-            HashMap<String, Object> graphParams = new HashMap<String, Object>();
-            graphParams.put(facebookGraph.PARAM_SESSION, session);
-            String email = "";
-            try {
-                HashMap<String, Object> graphRet =  facebookGraph.execute(graphParams).get();
-                email = (String) graphRet.get(facebookGraph.PARAM_EMAIL);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            Log.v(TAG, email);
+            Request me = Request.newMeRequest(session, new Request.GraphUserCallback() {
+                @Override
+                public void onCompleted(GraphUser user, Response response) {
+                    JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
+                    String email = graphResponse.optString("email");
 
-            // Server Authenticating
-            ServerSocialLoginAuthenticator ssla = new ServerSocialLoginAuthenticator();
-            HashMap<String, String> pars = new HashMap<String, String>();
-            pars.put(ServerSocialLoginAuthenticator.PARAM_URL, "http://onlinesociallogin.herokuapp.com/token_authentication/authenticate.json");
-            pars.put(ServerSocialLoginAuthenticator.PARAM_TOKEN, session.getAccessToken());
-            pars.put(ServerSocialLoginAuthenticator.PARAM_EMAIL, email);
+                    Log.v(TAG, email);
 
-            String json = null;
-            try {
-                json = ssla.execute(pars).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+                    // Server Authenticating
+                    ServerSocialLoginAuthenticator ssla = new ServerSocialLoginAuthenticator("http://onlinesociallogin.herokuapp.com/token_authentication/authenticate.json", token, email);
+                    String json = null;
+                    try {
+                        json = ssla.execute().get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
 
-            Log.v(TAG, "JSON: " + json);
+                    Log.v(TAG, "JSON: " + json);
+                }
+            });
+            Bundle pars = me.getParameters();
+            pars.putString("fields", "name, email");
+            me.setParameters(pars);
+            me.executeAsync();
+
+
 
         } else if (state.isClosed()) {
             Log.i(TAG, "Logged out...");
