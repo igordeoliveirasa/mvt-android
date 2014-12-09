@@ -19,35 +19,42 @@ import java.util.List;
 /**
  * Created by igor on 06/12/14.
  */
-public class ServerSocialLoginAuthenticator extends AsyncTask<HashMap<String,String>, Void, String> {
+public class ServerSocialLoginAuthenticator extends AsyncTask<Void, Void, String> {
 
     public static final String PARAM_URL = "URL";
     public static final String PARAM_TOKEN = "TOKEN";
     public static final String PARAM_EMAIL = "EMAIL";
 
+    private HttpConnection connection;
+    private String url;
+    private String email;
+    private String socialLoginToken;
+
+    public ServerSocialLoginAuthenticator(HttpConnection connection, String url, String email, String socialLoginToken) {
+        this.connection = connection;
+        this.url = url;
+        this.email = email;
+        this.socialLoginToken = socialLoginToken;
+    }
+
+    public ServerSocialLoginAuthenticator(String url, String email, String socialLoginToken) {
+        this.connection = new HttpConnection();
+        this.url = url;
+        this.email = email;
+        this.socialLoginToken = socialLoginToken;
+    }
+
     @Override
-    protected String doInBackground(HashMap<String,String>... params) {
+    protected String doInBackground(Void... params) {
         String ret = null;
         try {
-            HttpClient httpclient = new DefaultHttpClient(); // -> novo metodo, mudar no teste. HttpClientBuilder.create().build();
-            HashMap<String, String> map = ((HashMap<String, String>) params[0]);
-            String url = map.get(PARAM_URL);//[PARAM_URL];// "http://onlinesociallogin.herokuapp.com/token_authentication/authenticate.json";
-            //url = "http://172.20.10.3:3000";
-            HttpPost httppost = new HttpPost(url);
-
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            nameValuePairs.add(new BasicNameValuePair("token", map.get(PARAM_TOKEN)));
-            nameValuePairs.add(new BasicNameValuePair("email", map.get(PARAM_EMAIL)));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-            ret = reader.readLine();
-            //JSONTokener tokener = new JSONTokener(json);
-            //JSONArray finalResult = new JSONArray(tokener);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("token", socialLoginToken));
+            nameValuePairs.add(new BasicNameValuePair("email", email));
+            ret = connection.post(url,nameValuePairs);
         } catch (Exception ex) {
         }
         return ret;
     }
+
 }
