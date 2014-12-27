@@ -5,24 +5,26 @@ package com.igordeoliveira.yolo.model;
  */
 public class User {
 
-    private long id;
+    private long uid;
     private String name;
     private String email;
-    private Uid uid;
+    private String image;
+    private String provider;
 
-    public User(long id, String name, String email, Uid uid) {
-        this.id = id;
+    public User(String provider, long uid, String name, String email, String image) {
+        this.provider = provider;
+        this.uid = uid;
         this.name = name;
         this.email = email;
-        this.uid = uid;
+        this.image = image;
     }
 
-    public long getId() {
-        return id;
+    public String getProvider() {
+        return provider;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     public String getName() {
@@ -40,12 +42,21 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public Uid getUid() {
+    public long getUid() {
         return uid;
     }
 
-    public void setUid(Uid uid) {
+    public void setUid(long uid) {
         this.uid = uid;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+
 }

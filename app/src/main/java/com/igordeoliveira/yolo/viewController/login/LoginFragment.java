@@ -1,5 +1,8 @@
 package com.igordeoliveira.yolo.viewController.login;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
@@ -9,24 +12,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.igordeoliveira.yolo.Constants;
 import com.igordeoliveira.yolo.R;
+import com.igordeoliveira.yolo.model.User;
+import com.igordeoliveira.yolo.viewController.home.HomeActivity;
 import com.igordeoliveira.yolo.viewController.home.HomeFragment;
-import com.igordeoliveira.yolo.viewController.home.HomeFragmentActivity;
 
 import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class LoginFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener  {
 
@@ -42,7 +50,7 @@ public class LoginFragment extends Fragment implements GoogleApiClient.Connectio
 
 
     private static final String TAG = "MainFragment";
-    private HomeFragmentActivity homeFragmentActivity;
+    private HomeActivity homeActivity;
 
 
     private View.OnClickListener googleButtonsClickListener;
@@ -67,6 +75,8 @@ public class LoginFragment extends Fragment implements GoogleApiClient.Connectio
         super.onCreate(savedInstanceState);
         uiHelper = new UiLifecycleHelper(getActivity(), callback);
         uiHelper.onCreate(savedInstanceState);
+
+        homeActivity = (HomeActivity)getActivity();
     }
 
 
@@ -78,9 +88,9 @@ public class LoginFragment extends Fragment implements GoogleApiClient.Connectio
 
 
 
-        LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
-        authButton.setFragment(this);
-        //authButton.setReadPermissions(Arrays.asList("user_likes", "user_status")); // asking permissions
+        LoginButton btnSignInFacebook = (LoginButton) view.findViewById(R.id.authButton);
+        btnSignInFacebook.setFragment(this);
+        btnSignInFacebook.setReadPermissions(Arrays.asList("user_likes", "user_status", "email")); // asking permissions
 
 
         googleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -113,21 +123,55 @@ public class LoginFragment extends Fragment implements GoogleApiClient.Connectio
         ft.commit();
     }
 
-    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+    private void onSessionStateChange(final Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
 
+            Log.v(TAG, "Fb: Logged in...");
             final String token = session.getAccessToken();
 
+            final LoginFragment thizz = this;
             // Requesting Facebook Me
             Request me = Request.newMeRequest(session, new Request.GraphUserCallback() {
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
-                    JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
-                    String email = graphResponse.optString("email");
-                    Log.v(TAG, email);
+                    GraphObject graphObject = response.getGraphObject();
+                    if (graphObject!=null) {
+                        JSONObject graphResponse = graphObject.getInnerJSONObject();
 
-                    showHomeFragment();
+                        // saving preferences
+                        String email = graphResponse.optString("email");
+                        String image = "http://graph.facebook.com/" + user.getId() + "/picture";
 
+                        User sessionUser = new User("facebook", new Long(user.getId()), user.getName(), email, image);
+                        homeActivity.setUserSession(sessionUser);
+                        homeActivity.getApplicationPreferences().edit().putString("provider", sessionUser.getProvider())
+                                .putLong("uid", sessionUser.getUid())
+                                .putString("name", sessionUser.getName())
+                                .putString("email", sessionUser.getEmail())
+                                .putString("image", sessionUser.getImage())
+                                .commit();
+
+                        homeActivity.getTracker().send(new HitBuilders.EventBuilder()
+                                .setCategory("Authentication")
+                                .setAction("LoggedIn")
+                                .setLabel("Facebook")
+                                .build());
+
+                        showHomeFragment();
+                    } else {
+                        Session.getActiveSession().close();
+
+                        AlertDialog dialog = new AlertDialog.Builder(thizz.getView().getContext())
+                                .setTitle("Atenção")
+                                .setMessage("Verifique se seu dispositivo encontra-se conectado com a internet corretamente.")
+                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
                 }
             });
             Bundle pars = me.getParameters();
@@ -136,7 +180,7 @@ public class LoginFragment extends Fragment implements GoogleApiClient.Connectio
             me.executeAsync();
 
         } else if (state.isClosed()) {
-            Log.i(TAG, "Logged out...");
+            Log.i(TAG, "Fb: Logged out...");
         }
     }
 

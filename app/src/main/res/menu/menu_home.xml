@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.igordeoliveira.yolo.viewController.home.HomeFragmentActivity">
+    tools:context="com.igordeoliveira.yolo.viewController.home.HomeActivity">
 
 
     <item android:id="@+id/menuItemLogout" android:title="Logout"

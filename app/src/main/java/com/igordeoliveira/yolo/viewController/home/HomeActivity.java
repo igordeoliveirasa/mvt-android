@@ -1,7 +1,9 @@
 package com.igordeoliveira.yolo.viewController.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -24,15 +26,19 @@ import com.google.android.gms.plus.Plus;
 import com.igordeoliveira.yolo.BuildConfig;
 import com.igordeoliveira.yolo.Constants;
 import com.igordeoliveira.yolo.R;
+import com.igordeoliveira.yolo.model.User;
 import com.igordeoliveira.yolo.viewController.login.LoginFragment;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 
-public class HomeFragmentActivity extends FragmentActivity {
+public class HomeActivity extends FragmentActivity {
 
     /* Request code used to invoke sign in user interactions. */
+
+
     private Menu menu;
     public Menu getMenu() {return this.menu;}
     private LoginFragment loginFragment;
@@ -41,10 +47,30 @@ public class HomeFragmentActivity extends FragmentActivity {
     Tracker tracker;
     public Tracker getTracker() {return this.tracker;}
 
+    private User userSession;
+
+    private SharedPreferences applicationPreferences;
+    public SharedPreferences getApplicationPreferences() {
+        return applicationPreferences;
+    }
+
+    public User getUserSession() {
+        return userSession;
+    }
+
+    public void setUserSession(User userSession) {
+        this.userSession = userSession;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showAppHash();
+
+        applicationPreferences = getSharedPreferences("APPLICATION", Context.MODE_PRIVATE);
+        if ( applicationPreferences.getLong("FIRST_USING_TIME", 0) == 0 ) {
+            applicationPreferences.edit().putLong("FIRST_USING_TIME", new Date().getTime()).commit();
+        }
 
         analytics = GoogleAnalytics.getInstance(getApplicationContext());
         analytics.setAppOptOut(BuildConfig.DEBUG);
