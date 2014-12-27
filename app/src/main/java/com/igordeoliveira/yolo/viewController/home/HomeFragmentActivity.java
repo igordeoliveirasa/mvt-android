@@ -16,9 +16,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.Session;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.igordeoliveira.yolo.BuildConfig;
 import com.igordeoliveira.yolo.Constants;
 import com.igordeoliveira.yolo.R;
 import com.igordeoliveira.yolo.viewController.login.LoginFragment;
@@ -34,11 +37,20 @@ public class HomeFragmentActivity extends FragmentActivity {
     public Menu getMenu() {return this.menu;}
     private LoginFragment loginFragment;
 
+    GoogleAnalytics analytics;
+    Tracker tracker;
+    public Tracker getTracker() {return this.tracker;}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //showAppHash();
+
+        analytics = GoogleAnalytics.getInstance(getApplicationContext());
+        analytics.setAppOptOut(BuildConfig.DEBUG);
+
+        tracker = analytics.newTracker(R.xml.app_tracker);
+        tracker.enableAdvertisingIdCollection(true);
 
         if (savedInstanceState == null) {
             loginFragment = new LoginFragment();

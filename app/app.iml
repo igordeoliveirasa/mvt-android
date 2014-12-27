@@ -81,14 +81,13 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="support-v4-21.0.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-6.5.87" level="project" />
     <orderEntry type="library" exported="" name="testrunner-1.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="asm-5.0.1" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="guava-14.0.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="dagger-1.1.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-library-1.1" level="project" />
@@ -113,8 +112,8 @@
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="fest-assert-core-2.0M10" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.3.6" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-21.0.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="fest-util-1.2.5" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="ant-launcher-1.8.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.3.3" level="project" />
