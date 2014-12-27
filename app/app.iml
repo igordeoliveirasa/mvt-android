@@ -84,10 +84,11 @@
       <excludeFolder url="file://$MODULE_DIR$/build/tmp"/>
     </content>
     <orderEntry type="sourceFolder" forTests="false"/>
+    <orderEntry type="library" exported="" name="play-services-6.5.87" level="project"/>
     <orderEntry type="library" exported="" name="testrunner-1.1" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="asm-5.0.1" level="project"/>
+    <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="guava-14.0.1" level="project"/>
-    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="dagger-1.1.0" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-library-1.1" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="mockito-core-1.10.8" level="project"/>
@@ -96,7 +97,6 @@
     <orderEntry type="library" exported="" name="httpclient-4.3.6" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="fest-android-1.0.8" level="project"/>
     <orderEntry type="library" exported="" name="testrunner-runtime-1.1" level="project"/>
-    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="maven-ant-tasks-2.1.3" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="sqlite4java-0.282" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="commons-codec-1.3" level="project"/>
@@ -113,12 +113,12 @@
     <orderEntry type="library" exported="" scope="TEST" name="fest-assert-core-2.0M10" level="project"/>
     <orderEntry type="library" exported="" name="httpmime-4.3.6" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="fest-util-1.2.5" level="project"/>
+    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="ant-launcher-1.8.0" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="javax.inject-1" level="project"/>
     <orderEntry type="library" exported="" name="httpcore-4.3.3" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="asm-util-5.0.1" level="project"/>
     <orderEntry type="library" exported="" name="bolts-android-1.1.2" level="project"/>
-    <orderEntry type="library" exported="" name="play-services-6.1.71" level="project"/>
     <orderEntry type="library" exported="" scope="TEST" name="hamcrest-integration-1.1" level="project"/>
     <orderEntry type="module" module-name="facebook" exported=""/>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK"/>

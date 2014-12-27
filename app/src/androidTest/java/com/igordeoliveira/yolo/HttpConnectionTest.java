@@ -1,15 +1,13 @@
-package com.igordeoliveira.sociallogin;
+package com.igordeoliveira.yolo;
 
-import android.content.Entity;
+import com.igordeoliveira.yolo.lib.HttpConnection;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -18,7 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.tester.org.apache.http.HttpResponseStub;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

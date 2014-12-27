@@ -1,19 +1,13 @@
-package com.igordeoliveira.sociallogin;
+package com.igordeoliveira.yolo.lib;
 
 import android.os.AsyncTask;
 
-import org.apache.http.HttpResponse;
+import com.igordeoliveira.yolo.lib.HttpConnection;
+
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -45,7 +39,7 @@ public class ServerSocialLoginAuthenticator extends AsyncTask<Void, Void, String
     }
 
     @Override
-    protected String doInBackground(Void... params) {
+    public String doInBackground(Void... params) {
         String ret = null;
         try {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();

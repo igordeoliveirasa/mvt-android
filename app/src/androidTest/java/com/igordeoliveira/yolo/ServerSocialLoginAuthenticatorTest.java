@@ -1,11 +1,9 @@
-package com.igordeoliveira.sociallogin;
+package com.igordeoliveira.yolo;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
+import com.igordeoliveira.yolo.lib.HttpConnection;
+import com.igordeoliveira.yolo.lib.ServerSocialLoginAuthenticator;
+
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -16,15 +14,11 @@ import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;

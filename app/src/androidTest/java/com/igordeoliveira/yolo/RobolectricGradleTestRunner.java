@@ -1,4 +1,4 @@
-package com.igordeoliveira.sociallogin;
+package com.igordeoliveira.yolo;
 
 import org.junit.runners.model.InitializationError;
 import org.robolectric.AndroidManifest;

@@ -1,7 +1,5 @@
-package com.igordeoliveira.sociallogin;
+package com.igordeoliveira.yolo;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,32 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.facebook.Session;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
+import com.igordeoliveira.yolo.viewController.login.LoginFragment;
 
-import org.apache.http.NameValuePair;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +34,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(emulateSdk = 18)
-public class LoginButtonsFragmentTest {
+public class LoginFragmentTest {
 
     public static void startFragment( Fragment fragment )
     {
@@ -64,7 +53,7 @@ public class LoginButtonsFragmentTest {
     @Test
     public void testGettersAndSetters() throws IOException, JSONException {
         // Setting the mocks up
-        LoginButtonsFragment fragment = new LoginButtonsFragment();
+        LoginFragment fragment = new LoginFragment();
         View.OnClickListener myClickListener = new View.OnClickListener() {@Override public void onClick(View v) {}};
         fragment.setGoogleButtonsClickListener(myClickListener);
         assertEquals(myClickListener, fragment.getGoogleButtonsClickListener());
@@ -89,16 +78,16 @@ public class LoginButtonsFragmentTest {
         ViewGroup container = Mockito.mock(ViewGroup.class);
 
         LayoutInflater inflater = Mockito.mock(LayoutInflater.class);
-        when(inflater.inflate(R.layout.fragment_main, container, false)).thenReturn(mockView);
+        when(inflater.inflate(R.layout.fragment_login, container, false)).thenReturn(mockView);
 
         Bundle savedInstanceState = Mockito.mock(Bundle.class);
 
-        LoginButtonsFragment fragment = new LoginButtonsFragment();
+        LoginFragment fragment = new LoginFragment();
         View view = fragment.onCreateView(inflater, container, savedInstanceState);
 
         // assertations
         verify(loginButton).setFragment(fragment);
-        verify(inflater).inflate(R.layout.fragment_main, container, false);
+        verify(inflater).inflate(R.layout.fragment_login, container, false);
         verify(signInButton).setOnClickListener(fragment.getGoogleButtonsClickListener());
         verify(signOutButton).setOnClickListener(fragment.getGoogleButtonsClickListener());
 
