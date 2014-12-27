@@ -3,7 +3,9 @@ Yolo Android
 [![Build Status](https://travis-ci.org/igordeoliveirasa/yolo-android.svg?branch=master)](https://travis-ci.org/igordeoliveirasa/yolo-android)
 [![Coverage Status](https://img.shields.io/coveralls/igordeoliveirasa/yolo-android.svg)](https://coveralls.io/r/igordeoliveirasa/yolo-android?branch=master)
 
-It's a minimal viable template for Android. I've been developing it in order to speed up the development of a minimal viable product since we only live once. :)
+It's a minimal viable product template for Android. I've been developing it in order to speed up the development of a minimal viable product since we only live once. :)
+
+It's been also being developed for iOS: https://github.com/igordeoliveirasa/yolo-ios.
 
 Addendum: The coverage is near to zero, however I'm working on it. I had problems to set up the reporter. Nevertheless, you can keep on reading the doc.
 
