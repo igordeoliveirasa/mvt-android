@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.+'
+        classpath 'com.android.tools.build:gradle:1.0.0'
         classpath 'org.robolectric:robolectric-gradle-plugin:0.14.+'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1x'
     }
@@ -122,19 +122,19 @@ android {
     buildToolsVersion "20.0.0"
     defaultConfig {
         applicationId "com.igordeoliveira.sociallogin"
-        minSdkVersion 13
-        targetSdkVersion 13
+        minSdkVersion 10
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            runProguard false
+            minifyEnabled false
             proguardFile 'proguard-rules.txt'
             debuggable true
             testCoverageEnabled = true

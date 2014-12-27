@@ -47,7 +47,7 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.igordeoliveira.sociallogin",
+                    Constants.PACKAGE,
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
@@ -115,6 +115,22 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
         }
     }
 
+    /* A helper method to resolve the current ConnectionResult error. */
+    protected void resolveSignInError() {
+        if (mConnectionResult!= null && mConnectionResult.hasResolution()) {
+            try {
+                mIntentInProgress = true;
+                startIntentSenderForResult(mConnectionResult.getResolution().getIntentSender(),
+                        RC_SIGN_IN, null, 0, 0, 0);
+            } catch (IntentSender.SendIntentException e) {
+                // The intent was canceled before it was sent.  Return to the default
+                // state and attempt to connect to get an updated ConnectionResult.
+                mIntentInProgress = false;
+                mGoogleApiClient.connect();
+            }
+        }
+    }
+
     public void onConnectionFailed(ConnectionResult result) {
         if (!mIntentInProgress) {
             // Store the ConnectionResult so that we can use it later when the user clicks
@@ -154,22 +170,6 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
 
     public void onConnectionSuspended(int cause) {
         mGoogleApiClient.connect();
-    }
-
-    /* A helper method to resolve the current ConnectionResult error. */
-    private void resolveSignInError() {
-        if (mConnectionResult!= null && mConnectionResult.hasResolution()) {
-            try {
-                mIntentInProgress = true;
-                startIntentSenderForResult(mConnectionResult.getResolution().getIntentSender(),
-                        RC_SIGN_IN, null, 0, 0, 0);
-            } catch (IntentSender.SendIntentException e) {
-                // The intent was canceled before it was sent.  Return to the default
-                // state and attempt to connect to get an updated ConnectionResult.
-                mIntentInProgress = false;
-                mGoogleApiClient.connect();
-            }
-        }
     }
 
     public void onClick(View view) {
