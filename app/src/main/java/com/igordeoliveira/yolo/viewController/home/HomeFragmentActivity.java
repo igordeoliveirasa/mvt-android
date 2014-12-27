@@ -44,7 +44,7 @@ public class HomeFragmentActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //showAppHash();
+        showAppHash();
 
         analytics = GoogleAnalytics.getInstance(getApplicationContext());
         analytics.setAppOptOut(BuildConfig.DEBUG);

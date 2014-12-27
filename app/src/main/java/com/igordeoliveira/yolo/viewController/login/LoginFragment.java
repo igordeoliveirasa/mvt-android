@@ -108,7 +108,7 @@ public class LoginFragment extends Fragment implements GoogleApiClient.Connectio
     }
 
     public void showHomeFragment() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(android.R.id.content, new HomeFragment());
         ft.commit();
     }
