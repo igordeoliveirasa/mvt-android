@@ -84,7 +84,7 @@ public class LoginButtonsFragmentTest {
         View mockView = Mockito.mock(View.class);
         when(mockView.findViewById(R.id.authButton)).thenReturn(loginButton);
         when(mockView.findViewById(R.id.sign_in_button)).thenReturn(signInButton);
-        when(mockView.findViewById(R.id.sign_out_button)).thenReturn(signOutButton);
+        //when(mockView.findViewById(R.id.sign_out_button)).thenReturn(signOutButton);
 
         ViewGroup container = Mockito.mock(ViewGroup.class);
 

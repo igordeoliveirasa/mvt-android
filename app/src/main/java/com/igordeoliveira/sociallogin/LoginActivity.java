@@ -30,7 +30,6 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
     private boolean mIntentInProgress;
     private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
-
     private LoginButtonsFragment loginButtonsFragment;
 
 
@@ -99,9 +98,7 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
         return super.onOptionsItemSelected(item);
     }
 
-
     //GOOGLE
-
     protected void onStart() {
         super.onStart();
         //mGoogleApiClient.connect();
@@ -181,6 +178,7 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
             mGoogleApiClient.connect();
         }
 
+        /*
         if (view.getId() == R.id.sign_out_button) {
             if (mGoogleApiClient.isConnected()) {
                 mSignInClicked = false;
@@ -189,7 +187,7 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
                 mGoogleApiClient.disconnect();
                 //mGoogleApiClient.connect();
             }
-        }
+        }*/
     }
 
 }

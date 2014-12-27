@@ -74,8 +74,8 @@ public class LoginButtonsFragment extends Fragment {
         SignInButton btnSignInGoogle = (SignInButton)view.findViewById(R.id.sign_in_button);
         btnSignInGoogle.setOnClickListener(googleButtonsClickListener);
 
-        Button btnSignOutGoogle = (Button)view.findViewById(R.id.sign_out_button);
-        btnSignOutGoogle.setOnClickListener(googleButtonsClickListener);
+        //Button btnSignOutGoogle = (Button)view.findViewById(R.id.sign_out_button);
+        //btnSignOutGoogle.setOnClickListener(googleButtonsClickListener);
 
         return view;
     }
