@@ -110,4 +110,11 @@ public class HomeFragmentActivity extends FragmentActivity {
 
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        loginFragment.onActivityResult(requestCode, resultCode, data);
+    }
+
 }
