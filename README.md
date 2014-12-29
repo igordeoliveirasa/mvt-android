@@ -14,6 +14,7 @@ If you would like to start an Android project using Android Studio with a minima
 Resources already implemented
 --------------------
 - Social Login: Facebook, Google;
+- Google Analytics prepared for using;
 - Roboeletric as testing framework;
 - Travis integration;
 
