@@ -1,7 +1,7 @@
 Yolo Android
 ====================
 [![Build Status](https://travis-ci.org/igordeoliveirasa/yolo-android.svg?branch=master)](https://travis-ci.org/igordeoliveirasa/yolo-android)
-[![Coverage Status](https://img.shields.io/coveralls/igordeoliveirasa/yolo-android.svg)](https://coveralls.io/r/igordeoliveirasa/yolo-android?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/igordeoliveirasa/yolo-android.svg)](https://coveralls.io/r/igordeoliveirasa/yolo-android?branch=master) <-- I had problems to set up the reporter. Nevertheless, you can keep on reading the doc.
 
 It's a minimal viable product template for Android. I've been developing it in order to speed up the development of a minimal viable product since we only live once. :)
 
